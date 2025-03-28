@@ -146,10 +146,7 @@
             color: white;
         }
         
-        .cell.found {
-            background-color: var(--success);
-            color: white;
-        }
+        /* Removemos a classe .found genérica e usaremos classes específicas para cada palavra */
         
         .word-list {
             display: flex;
@@ -167,12 +164,7 @@
             transition: all 0.3s;
         }
         
-        .word-item.found {
-            background-color: var(--success);
-            color: white;
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
+        /* Estilo para palavras encontradas será aplicado dinamicamente */
         
         .modal {
             display: none;
@@ -266,7 +258,7 @@
 <body>
     <header>
         <h1>Caça-Palavras Bíblico</h1>
-        <p class="subtitle">Encontre as palavras da Bíblia no menor tempo possível!</p>
+        <p class="subtitle">Encontre as palavras da Bíblia, cada uma com uma cor diferente!</p>
     </header>
     
     <div class="game-container">
@@ -368,6 +360,14 @@
             ]
         };
 
+        // Paleta de cores para as palavras
+        const wordColors = [
+            '#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', 
+            '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE',
+            '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40',
+            '#FF6E40', '#FF3D00', '#8D6E63', '#78909C', '#9E9E9E'
+        ];
+
         // Game variables
         let grid = [];
         let words = [];
@@ -377,6 +377,7 @@
         let startTime;
         let timerInterval;
         let records = JSON.parse(localStorage.getItem('biblicalWordSearchRecords')) || [];
+        let wordColorMap = {}; // Mapeamento de palavras para cores
         
         // DOM elements
         const wordSearchElement = document.getElementById('word-search');
@@ -407,6 +408,7 @@
             foundWords = [];
             selectedCells = [];
             gameActive = false;
+            wordColorMap = {};
             
             if (timerInterval) {
                 clearInterval(timerInterval);
@@ -448,6 +450,8 @@
             const shuffledWords = [...themeWords].sort(() => 0.5 - Math.random());
             for (let i = 0; i < wordCount && i < shuffledWords.length; i++) {
                 words.push(shuffledWords[i]);
+                // Atribuir uma cor única para cada palavra
+                wordColorMap[shuffledWords[i]] = wordColors[i % wordColors.length];
             }
             
             // Create empty grid
@@ -570,11 +574,15 @@
         // Render the word list
         function renderWordList(words) {
             wordListElement.innerHTML = '';
-            words.forEach(word => {
+            words.forEach((word, index) => {
                 const wordElement = document.createElement('div');
                 wordElement.className = 'word-item';
                 wordElement.textContent = word;
                 wordElement.dataset.word = word;
+                
+                // Definir a cor do marcador da palavra na lista
+                wordElement.style.borderLeft = `5px solid ${wordColorMap[word]}`;
+                
                 wordListElement.appendChild(wordElement);
             });
         }
@@ -658,18 +666,22 @@
                 // Mark word as found
                 foundWords.push(foundWord);
                 
-                // Highlight cells
+                // Highlight cells with the specific color for this word
                 const cells = document.querySelectorAll('.cell');
                 for (const cell of selectedCells) {
                     const index = cell.row * grid.length + cell.col;
-                    cells[index].classList.add('found');
+                    cells[index].style.backgroundColor = wordColorMap[foundWord];
+                    cells[index].style.color = 'white';
                 }
                 
                 // Update word list
                 const wordElements = document.querySelectorAll('.word-item');
                 for (const el of wordElements) {
                     if (el.dataset.word === foundWord) {
-                        el.classList.add('found');
+                        el.style.backgroundColor = wordColorMap[foundWord];
+                        el.style.color = 'white';
+                        el.style.textDecoration = 'line-through';
+                        el.style.opacity = '0.7';
                         break;
                     }
                 }
@@ -687,7 +699,14 @@
         // Update selected cells highlighting
         function updateSelectedCells() {
             const cells = document.querySelectorAll('.cell');
-            cells.forEach(cell => cell.classList.remove('selected'));
+            cells.forEach(cell => {
+                cell.classList.remove('selected');
+                // Restaurar a cor original se não for uma palavra encontrada
+                if (!cell.style.backgroundColor) {
+                    cell.style.backgroundColor = 'white';
+                    cell.style.color = 'black';
+                }
+            });
             
             for (const cell of selectedCells) {
                 const index = cell.row * grid.length + cell.col;
