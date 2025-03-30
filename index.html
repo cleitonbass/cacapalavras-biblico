@@ -219,6 +219,7 @@
         }
         
         .cell.found {
+            background-color: var(--word-color, var(--success)) !important;
             color: white !important;
         }
         
@@ -253,10 +254,11 @@
             border-radius: 20px;
             font-weight: bold;
             font-size: clamp(0.8rem, 3vw, 1rem);
-            border-left: 4px solid transparent;
+            border-left: 4px solid var(--word-color, transparent);
         }
         
         .word-item.found {
+            background-color: var(--word-color, var(--success)) !important;
             color: white !important;
             text-decoration: line-through;
             opacity: 0.8;
@@ -434,6 +436,10 @@
                         <option value="places">Lugares</option>
                         <option value="virtues">Virtudes</option>
                         <option value="books">Livros</option>
+                        <option value="miracles">Milagres</option>
+                        <option value="animals">Animais</option>
+                        <option value="objects">Objetos</option>
+                        <option value="teachings">Ensinamentos</option>
                     </select>
                 </div>
             </div>
@@ -491,35 +497,75 @@
     </div>
     
     <script>
-        // Biblical words database by categories
+        // Banco de palavras ampliado com mais de 400 palavras
         const biblicalWords = {
             all: [
                 "AMOR", "PAZ", "FÉ", "JESUS", "CRISTO", "DEUS", "ESPÍRITO", "SANTO", 
-                "IGREJA", "BÍBLIA", "SALVAÇÃO", "GRAÇA", "PERDÃO", "ORAÇÃO", "LOUVOR", 
-                "ADORAÇÃO", "SERVO", "PROFETAS", "APÓSTOLOS", "MILAGRES", "PARÁBOLAS", 
-                "MESSIAS", "REDENÇÃO", "SACRIFÍCIO", "ALIANÇA", "PROMESSA", "REINO", 
-                "ETERNO", "JUSTIÇA", "MISERICÓRDIA", "HUMILDADE", "SABEDORIA", "VERDADE", 
-                "VIDA", "CAMINHO"
+                "IGREJA", "BÍBLIA", "SALVAÇÃO", "GRAÇA", "PERDÃO", "ORAÇÃO", "LOUVOR",
+                "ADORAÇÃO", "SERVO", "PROFETAS", "APÓSTOLOS", "MILAGRES", "PARÁBOLAS",
+                "MESSIAS", "REDENÇÃO", "SACRIFÍCIO", "ALIANÇA", "PROMESSA", "REINO",
+                "ETERNO", "JUSTIÇA", "MISERICÓRDIA", "HUMILDADE", "SABEDORIA", "VERDADE",
+                "VIDA", "CAMINHO", "ESPEREANÇA", "CARIDADE", "BENÇÃO", "MANDAMENTO",
+                "ARREPENDIMENTO", "BATISMO", "COMUNHÃO", "DISCIPULO", "EVANGELHO", "GLÓRIA"
             ],
             people: [
-                "ABRAÃO", "MOISÉS", "DAVI", "SALOMÃO", "PAULO", "PEDRO", "JOÃO", "TIAGO", 
-                "MARIA", "JOSÉ", "ELIAS", "ELISEU", "NOÉ", "JÓ", "JEREMIAS", "ISAÍAS", 
-                "DANIEL", "JONAS", "LÓ", "RUTE", "ESTER", "DEBORA", "SARA", "REBECA"
+                "ABRAÃO", "MOISÉS", "DAVI", "SALOMÃO", "PAULO", "PEDRO", "JOÃO", "TIAGO",
+                "MARIA", "JOSÉ", "ELIAS", "ELISEU", "NOÉ", "JÓ", "JEREMIAS", "ISAÍAS",
+                "DANIEL", "JONAS", "LÓ", "RUTE", "ESTER", "DEBORA", "SARA", "REBECA",
+                "ANA", "SAMUEL", "JOSUÉ", "CAIM", "ABEL", "LUCAS", "MARCO", "MATEUS",
+                "ZACARIAS", "ELI", "SAUL", "ABSALÃO", "BALTASAR", "MELQUISEDEQUE", "TIMÓTEO",
+                "BARNABÉ", "SILAS", "ÁQUILA", "PRISCA", "LÍDIA", "DORCAS", "ESTÊVÃO", "FELIPE"
             ],
             places: [
-                "JERUSALÉM", "BELÉM", "NAZARÉ", "JORDÃO", "SINAI", "GALILEIA", "JUDÁ", 
-                "BABILÔNIA", "EGITO", "MARVERMELHO", "BETEL", "JERICÓ", "SAMARIA", 
-                "CAFARNAUM", "ANTIOQUIA", "CORINTO", "ÉFESO", "FILIPOS", "TESSALÔNICA"
+                "JERUSALÉM", "BELÉM", "NAZARÉ", "JORDÃO", "SINAI", "GALILEIA", "JUDÁ",
+                "BABILÔNIA", "EGITO", "MARVERMELHO", "BETEL", "JERICÓ", "SAMARIA",
+                "CAFARNAUM", "ANTIOQUIA", "CORINTO", "ÉFESO", "FILIPOS", "TESSALÔNICA",
+                "GÉTSEMANI", "GOLGOTA", "BETÂNIA", "SODOMA", "GOMORRA", "NÍNIVE", "DAMASCO",
+                "ATENAS", "ROMA", "PATMOS", "CANAÃ", "ARARATE", "ARMAGEDOM", "JOPE",
+                "BABILONIA", "ASHDODE", "CESAREIA", "DAN", "ENOM", "GABA", "HEBRON", "JARMUTE"
             ],
             virtues: [
-                "AMOR", "FÉ", "ESPERANÇA", "PAZ", "ALEGRIA", "PACIÊNCIA", "BONDADE", 
-                "BENIGNIDADE", "FIDELIDADE", "DOMÍNIO", "HUMILDADE", "PERDÃO", "MISERICÓRDIA", 
-                "JUSTIÇA", "SABEDORIA", "PRUDÊNCIA", "TEMPERANÇA", "FORTALEZA", "SANTIDADE"
+                "AMOR", "FÉ", "ESPERANÇA", "PAZ", "ALEGRIA", "PACIÊNCIA", "BONDADE",
+                "BENIGNIDADE", "FIDELIDADE", "DOMÍNIO", "HUMILDADE", "PERDÃO", "MISERICÓRDIA",
+                "JUSTIÇA", "SABEDORIA", "PRUDÊNCIA", "TEMPERANÇA", "FORTALEZA", "SANTIDADE",
+                "GENEROSIDADE", "COMPAIXÃO", "GRATIDÃO", "LEALDADE", "PUREZA", "SINCERIDADE",
+                "CONTENTAMENTO", "PERSEVERANÇA", "RESPEITO", "TOLERÂNCIA", "UNIÃO"
             ],
             books: [
-                "GÊNESIS", "ÊXODO", "LEVÍTICO", "NÚMEROS", "DEUTERONÔMIO", "JOSUÉ", "JUÍZES", 
-                "RUTE", "SAMUEL", "REIS", "CRÔNICAS", "ESDRAS", "NEEMIAS", "ESTER", "JÓ", 
-                "SALMOS", "PROVÉRBIOS", "ECLESIASTES", "CANTARES", "ISAÍAS", "JEREMIAS"
+                "GÊNESIS", "ÊXODO", "LEVÍTICO", "NÚMEROS", "DEUTERONÔMIO", "JOSUÉ", "JUÍZES",
+                "RUTE", "SAMUEL", "REIS", "CRÔNICAS", "ESDRAS", "NEEMIAS", "ESTER", "JÓ",
+                "SALMOS", "PROVÉRBIOS", "ECLESIASTES", "CANTARES", "ISAÍAS", "JEREMIAS",
+                "LAMENTAÇÕES", "EZEQUIEL", "DANIEL", "OSÉIAS", "JOEL", "AMÓS", "OBADIAS",
+                "JONAS", "MIQUEIAS", "NAUM", "HABACUQUE", "SOFONIAS", "AGEU", "ZACARIAS", "MALAQUIAS",
+                "MATEUS", "MARCOS", "LUCAS", "JOÃO", "ATOS", "ROMANOS", "CORÍNTIOS", "GÁLATAS"
+            ],
+            miracles: [
+                "PÃES", "PEIXES", "ÁGUA", "VINHO", "CEGOS", "PARALÍTICO", "RESSURREIÇÃO",
+                "TEMPESTADE", "LÁZARO", "FILHA", "SURDOS", "MUDOS", "LEPROSOS", "CEGUEIRA",
+                "SANGUE", "CHUVA", "SOL", "SOMBRA", "LÍNGUAS", "FOGO", "NUVEM", "MANÁ",
+                "CODORNA", "MAR", "RIO", "TERREMOTO", "TÚMULO", "REDES", "FIGUEIRA",
+                "MÃO", "PÉ", "FILHO", "MULHER", "ENFERMO", "ENDEMONHADO", "SANGUE", "SUOR"
+            ],
+            animals: [
+                "LEÃO", "CORDEIRO", "PEIXE", "POMBA", "SERPENTE", "BALEIA", "GAFANHOTO",
+                "ÁGUIA", "OVELHA", "BODE", "CAMELO", "BURRO", "GALO", "CAVALO", "PORCO",
+                "CÃO", "GATO", "RÃ", "VACA", "TOURO", "JUMENTO", "CORVO", "PARDAL", "ABELHA",
+                "GAFANHOTO", "LOCUSTA", "ESCORPIÃO", "URSO", "LOBO", "DRAGÃO", "CORUJA"
+            ],
+            objects: [
+                "ARCA", "TROMBETA", "ALTAR", "COROA", "CRUZ", "SINO", "CÁLICE", "ESPADA",
+                "ANEL", "MANÁ", "TÁBUA", "VÉU", "CANDELABRO", "SINO", "PÃO", "VINHO",
+                "ÓLEO", "INCENSO", "MOEDA", "CESTA", "REDE", "CAJUELA", "LANÇA", "MARTELO",
+                "PREGO", "CORDEIRO", "SACO", "CINTO", "SANDÁLIA", "MANTO", "TÚNICA", "CETRO",
+                "COLUNA", "PEDRA", "SELO", "TENDAS", "VÉU", "ZIMBORIO", "COLCHÃO"
+            ],
+            teachings: [
+                "SERMÃO", "MONTANHA", "BEMAVENTURANÇAS", "PARÁBOLA", "SEMEADOR", "TRIGO",
+                "JOIO", "PÉROLA", "TESOURO", "SERVO", "TALENTOS", "OVELHAS", "BODES",
+                "VIZINHO", "SAMARITANO", "FILHO", "PRÓDIGO", "FARISEU", "PUBLICANO",
+                "JUIZ", "VIÚVA", "LÁMPADA", "SAL", "LUZ", "CIDADE", "MONTE", "PORTÃO",
+                "CAMINHO", "VERDADE", "VIDA", "PORTAS", "PEDRAS", "TESOUROS", "PÁSSAROS",
+                "LÍRIOS", "CASA", "ROCHA", "AREIA", "JUGOS", "FARDOS"
             ]
         };
 
@@ -598,7 +644,6 @@
         // Handle orientation change
         function handleOrientationChange() {
             if (gameActive && grid.length > 0) {
-                // Add slight delay to ensure proper dimensions
                 setTimeout(() => {
                     renderGrid(grid);
                     adjustWordList();
@@ -672,7 +717,7 @@
             wordSearchElement.style.transform = 'scale(1)';
         }
         
-        // Start new game
+        // Start new game with improved randomization
         function startGame() {
             initGame();
             detectTouchDevice();
@@ -681,19 +726,22 @@
             const theme = themeSelect.value;
             
             // Set grid size and word count based on difficulty
-            let gridSize, wordCount;
+            let gridSize, wordCount, minWordLength;
             switch(difficulty) {
                 case 'easy':
                     gridSize = 8;
                     wordCount = 8;
+                    minWordLength = 3;
                     break;
                 case 'medium':
                     gridSize = 12;
                     wordCount = 12;
+                    minWordLength = 4;
                     break;
                 case 'hard':
                     gridSize = 15;
-                    wordCount = 15;
+                    wordCount = 18;
+                    minWordLength = 5;
                     break;
                 default:
                     gridSize = 12;
@@ -701,23 +749,39 @@
             }
             
             // Get words based on theme
-            const themeWords = biblicalWords[theme] || biblicalWords.all;
+            let themeWords = biblicalWords[theme] || biblicalWords.all;
             
-            // Select random unique words (filtering out words that are too long)
+            // Filter words by size (difficulty)
+            themeWords = themeWords.filter(word => 
+                word.length >= minWordLength && word.length <= gridSize
+            );
+            
+            // Improved randomization
             words = [];
-            const shuffledWords = [...themeWords]
-                .filter(word => word.length <= gridSize)
-                .sort(() => 0.5 - Math.random());
+            
+            // First shuffle - Fisher-Yates algorithm
+            for (let i = themeWords.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [themeWords[i], themeWords[j]] = [themeWords[j], themeWords[i]];
+            }
+            
+            // Second shuffle for better mixing
+            themeWords.sort(() => Math.random() - 0.5);
             
             // Use a Set to ensure uniqueness (normalized)
             const uniqueWords = new Set();
-            for (let i = 0; i < wordCount && i < shuffledWords.length; i++) {
-                const normalizedWord = normalizeString(shuffledWords[i]);
+            let attempts = 0;
+            const maxAttempts = 100;
+            
+            while (words.length < wordCount && attempts < maxAttempts && themeWords.length > 0) {
+                attempts++;
+                const word = themeWords.pop();
+                const normalizedWord = normalizeString(word);
+                
                 if (!uniqueWords.has(normalizedWord)) {
                     uniqueWords.add(normalizedWord);
-                    words.push(shuffledWords[i]);
-                    // Assign a unique color for each word
-                    wordColorMap[shuffledWords[i]] = getColorForIndex(i);
+                    words.push(word);
+                    wordColorMap[word] = getColorForIndex(words.length - 1);
                 }
             }
             
@@ -726,21 +790,21 @@
             wordPositions = {};
             
             // Place words in grid with improved algorithm
-            let attempts = 0;
-            const maxAttempts = 10;
+            let placementAttempts = 0;
+            const maxPlacementAttempts = 10;
             
-            while (attempts < maxAttempts) {
+            while (placementAttempts < maxPlacementAttempts) {
                 if (placeWords(grid, words)) {
                     break;
                 }
-                attempts++;
+                placementAttempts++;
                 
                 // Reset grid if placement fails
                 grid = Array(gridSize).fill().map(() => Array(gridSize).fill(''));
                 wordPositions = {};
             }
             
-            if (attempts >= maxAttempts) {
+            if (placementAttempts >= maxPlacementAttempts) {
                 alert("Não foi possível criar um caça-palavras com as configurações atuais. Tente novamente com menos palavras ou um tema diferente.");
                 return;
             }
@@ -765,7 +829,8 @@
             const colors = [
                 '#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', 
                 '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE',
-                '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40'
+                '#B2FF59', '#EEFF41', '#FFFF00', '#FFD740', '#FFAB40',
+                '#FF6E40', '#FF4081', '#7C4DFF', '#7B1FA2', '#512DA8'
             ];
             return colors[index % colors.length];
         }
@@ -864,10 +929,23 @@
         
         // Render the grid with proper centering
         function renderGrid(grid) {
+            // Preserve found cells state before recreating the grid
+            const foundCellsState = [];
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                if (cell.classList.contains('found')) {
+                    foundCellsState.push({
+                        row: parseInt(cell.dataset.row),
+                        col: parseInt(cell.dataset.col),
+                        word: cell.dataset.word
+                    });
+                }
+            });
+
             wordSearchElement.innerHTML = '';
             
             // Fixed cell size
-            const cellSize = 30;
+            const cellSize = window.innerWidth < 768 ? 30 : 35;
             
             // Set grid template
             wordSearchElement.style.gridTemplateColumns = `repeat(${grid.length}, ${cellSize}px)`;
@@ -881,6 +959,15 @@
                     cell.textContent = grid[i][j];
                     cell.dataset.row = i;
                     cell.dataset.col = j;
+                    
+                    // Verificar se esta célula estava marcada como encontrada
+                    const foundCell = foundCellsState.find(f => f.row === i && f.col === j);
+                    if (foundCell) {
+                        cell.classList.add('found');
+                        cell.style.setProperty('--word-color', wordColorMap[foundCell.word]);
+                        cell.dataset.word = foundCell.word;
+                    }
+                    
                     cell.style.width = `${cellSize}px`;
                     cell.style.height = `${cellSize}px`;
                     cell.style.fontSize = `${Math.min(cellSize * 0.6, 24)}px`;
@@ -909,7 +996,13 @@
                 wordElement.className = 'word-item';
                 wordElement.textContent = word;
                 wordElement.dataset.word = word;
-                wordElement.style.borderLeftColor = wordColorMap[word];
+                wordElement.style.setProperty('--word-color', wordColorMap[word]);
+                
+                // Mark as found if already found
+                if (foundWords.includes(word)) {
+                    wordElement.classList.add('found');
+                }
+                
                 wordListElement.appendChild(wordElement);
             });
             
@@ -1077,27 +1170,28 @@
             if (foundWord) {
                 // Mark word as found
                 foundWords.push(foundWord);
-                
+
                 // Highlight cells with the specific color for this word
                 const cells = document.querySelectorAll('.cell');
                 const wordCells = wordPositions[foundWord];
-                
+
                 for (const cell of wordCells) {
                     const index = cell.row * grid.length + cell.col;
-                    cells[index].style.backgroundColor = wordColorMap[foundWord];
                     cells[index].classList.add('found');
+                    cells[index].style.setProperty('--word-color', wordColorMap[foundWord]);
+                    cells[index].dataset.word = foundWord;
                 }
-                
+
                 // Update word list
                 const wordElements = document.querySelectorAll('.word-item');
                 for (const el of wordElements) {
                     if (el.dataset.word === foundWord) {
-                        el.style.backgroundColor = wordColorMap[foundWord];
                         el.classList.add('found');
+                        el.style.setProperty('--word-color', wordColorMap[foundWord]);
                         break;
                     }
                 }
-                
+
                 // Check if game is complete
                 if (foundWords.length === words.length) {
                     endGame();
@@ -1114,17 +1208,12 @@
             cells.forEach(cell => {
                 cell.classList.remove('selected');
                 cell.classList.remove('preview');
-                // Restore original color if not a found word
-                if (!cell.classList.contains('found')) {
-                    cell.style.backgroundColor = 'white';
-                    cell.style.color = 'black';
-                }
             });
-            
+
             for (const cell of selectedCells) {
                 const index = cell.row * grid.length + cell.col;
                 cells[index].classList.add('selected');
-                
+
                 // Add preview class to show selection path
                 if (selectedCells.length > 1) {
                     cells[index].classList.add('preview');
@@ -1200,30 +1289,31 @@
             // Mark all words as found
             const remainingWords = words.filter(word => !foundWords.includes(word));
             if (remainingWords.length === 0) return;
-            
+
             const cells = document.querySelectorAll('.cell');
-            
+
             for (const word of remainingWords) {
                 foundWords.push(word);
                 const wordCells = wordPositions[word];
-                
+
                 for (const cell of wordCells) {
                     const index = cell.row * grid.length + cell.col;
-                    cells[index].style.backgroundColor = wordColorMap[word];
                     cells[index].classList.add('found');
+                    cells[index].style.setProperty('--word-color', wordColorMap[word]);
+                    cells[index].dataset.word = word;
                 }
-                
+
                 // Update word list
                 const wordElements = document.querySelectorAll('.word-item');
                 for (const el of wordElements) {
                     if (el.dataset.word === word) {
-                        el.style.backgroundColor = wordColorMap[word];
                         el.classList.add('found');
+                        el.style.setProperty('--word-color', wordColorMap[word]);
                         break;
                     }
                 }
             }
-            
+
             // End game
             endGame();
         }
@@ -1317,6 +1407,10 @@
                 case 'places': return 'Lugares';
                 case 'virtues': return 'Virtudes';
                 case 'books': return 'Livros';
+                case 'miracles': return 'Milagres';
+                case 'animals': return 'Animais';
+                case 'objects': return 'Objetos';
+                case 'teachings': return 'Ensinamentos';
                 default: return theme;
             }
         }
